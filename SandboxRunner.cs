@@ -12,7 +12,10 @@ public static class SandboxRunner
         if (source.Length > 32_000) return "Error: script exceeds the 32 KB demo limit.";
         try
         {
-            var engine = new Engine(source);
+            string code = StripComments(source);
+            if (Regex.IsMatch(MaskStrings(code), @"\bloadstring\s*\(|\bgame\s*[:.]\s*(?:HttpGet|GetService)\s*\(", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+                return "Error: This script needs Roblox or downloaded code. Swift Sandbox only runs local demo commands and cannot execute scripts in Roblox. Try a built-in sample.";
+            var engine = new Engine(code);
             return engine.Execute();
         }
         catch (DemoException ex) { return "Error: " + ex.Message; }
@@ -20,6 +23,59 @@ public static class SandboxRunner
     }
 
     private sealed class DemoException(string message) : Exception(message);
+
+    private static string StripComments(string source)
+    {
+        var cleaned = new StringBuilder(source.Length);
+        char quote = '\0';
+        for (int i = 0; i < source.Length; i++)
+        {
+            char c = source[i];
+            if (quote != '\0')
+            {
+                cleaned.Append(c);
+                if (c == '\\' && i + 1 < source.Length) cleaned.Append(source[++i]);
+                else if (c == quote) quote = '\0';
+            }
+            else if (c is '\'' or '"') { quote = c; cleaned.Append(c); }
+            else if (c == '-' && i + 1 < source.Length && source[i + 1] == '-')
+            {
+                if (i + 3 < source.Length && source[i + 2] == '[' && source[i + 3] == '[')
+                {
+                    int end = source.IndexOf("]]", i + 4, StringComparison.Ordinal);
+                    if (end < 0) throw new DemoException("an unfinished multiline comment was found.");
+                    for (int j = i; j < end + 2; j++) cleaned.Append(source[j] is '\n' or '\r' ? source[j] : ' ');
+                    i = end + 1;
+                }
+                else
+                {
+                    while (i < source.Length && source[i] is not ('\n' or '\r')) { cleaned.Append(' '); i++; }
+                    i--;
+                }
+            }
+            else cleaned.Append(c);
+        }
+        return cleaned.ToString();
+    }
+
+    private static string MaskStrings(string source)
+    {
+        var masked = new StringBuilder(source.Length);
+        char quote = '\0';
+        for (int i = 0; i < source.Length; i++)
+        {
+            char c = source[i];
+            if (quote != '\0')
+            {
+                masked.Append(c is '\n' or '\r' ? c : ' ');
+                if (c == '\\' && i + 1 < source.Length) { masked.Append(' '); i++; }
+                if (c == quote) quote = '\0';
+            }
+            else if (c is '\'' or '"') { quote = c; masked.Append(' '); }
+            else masked.Append(c);
+        }
+        return masked.ToString();
+    }
 
     private sealed class Engine
     {
