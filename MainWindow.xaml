@@ -22,7 +22,7 @@
           <TextBlock Grid.Row="1" Text="BUILT-IN SCRIPTS" Foreground="#9E72F5" FontSize="10" FontWeight="Bold" Margin="8,25,0,8"/>
           <ListBox Grid.Row="2" x:Name="BuiltInList" SelectionChanged="BuiltInList_SelectionChanged"/>
           <Grid Grid.Row="3" Margin="0,24,0,0"><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions><TextBlock Text="SAVED SCRIPTS" Foreground="#9E72F5" FontSize="10" FontWeight="Bold" Margin="8,0,0,8"/><ListBox Grid.Row="1" x:Name="SavedList" SelectionChanged="SavedList_SelectionChanged"/></Grid>
-          <Border Grid.Row="4" Background="#202131" CornerRadius="7" Padding="10" Margin="0,10,0,0"><TextBlock Text="Scripts run in a limited local demo. No game connection." TextWrapping="Wrap" Foreground="#A8A6BA" FontSize="11"/></Border>
+          <Border Grid.Row="4" Background="#202131" CornerRadius="7" Padding="10" Margin="0,10,0,0"><TextBlock Text="Local demo only. Roblox and ScriptBlox scripts cannot run here." TextWrapping="Wrap" Foreground="#A8A6BA" FontSize="11"/></Border>
         </Grid>
       </Border>
       <Grid Grid.Column="1" Margin="19,17,19,13">
