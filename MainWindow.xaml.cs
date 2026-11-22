@@ -40,7 +40,7 @@ public partial class MainWindow : Window
         BuiltInList.ItemsSource = Samples.Select(s => "✦  " + s.Title).ToList();
         RefreshSaved();
         AddTab("Untitled", "-- Write a Luau-style demo script here\nprint(\"Ready to explore!\")");
-        OutputBox.Text = "Local demo ready. Supported: print, warn, variables, arithmetic, string joins, and simple for loops.";
+        OutputBox.Text = "Local demo ready. Try a built-in sample. Roblox and ScriptBlox scripts cannot run here.";
         Editor.Focus();
     }
 
