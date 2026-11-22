@@ -19,7 +19,7 @@ For a local build, the executable is created at `release/SwiftSandbox.exe`. The 
 
 ## Demo language
 
-The runner supports `print(...)`, `warn(...)`, `local` variables and assignments, numbers, quoted strings, arithmetic (`+`, `-`, `*`, `/`), string joining with `..`, parentheses, and simple integer `for i = start, end do ... end` loops. It is intentionally a small Luau-style subset, **not a full Luau interpreter**. Unsupported statements return an error. Execution has limits on script size, statements, loop range, and output. Script text is never sent to Roblox, a server, or a shell.
+The runner supports `print(...)`, `warn(...)`, `local` variables and assignments, numbers, quoted strings, arithmetic (`+`, `-`, `*`, `/`), string joining with `..`, parentheses, simple integer `for i = start, end do ... end` loops, and line and multiline comments. It is intentionally a small Luau-style subset, **not a full Luau interpreter**. Scripts that call Roblox APIs or load code from a URL receive a clear explanation; they cannot execute in a game. Execution has limits on script size, statements, loop range, and output. Script text is never sent to Roblox, a server, or a shell.
 
 ## Build from source
 
